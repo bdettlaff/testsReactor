@@ -86,6 +86,20 @@ public class WashingMachineTest {
     }
 
     @Test
+    public void shouldReturnTrueIfReleaseInWaterPumpInvokesOnce(){
+        LaundryBatch laundryBatch = LaundryBatch.builder()
+                                                .withWeightKg(6)
+                                                .withType(Material.WOOL)
+                                                .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.SHORT)
+                                                                        .withSpin(true)
+                                                                        .build();
+        washingMachine.start(laundryBatch,programConfiguration);
+        verify(waterPump,times(1)).release();
+    }
+
+    @Test
     public void itCompiles() {
         assertThat(true, Matchers.equalTo(true));
     }
