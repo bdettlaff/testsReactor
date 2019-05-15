@@ -71,7 +71,19 @@ public class WashingMachineTest {
         verify(engine,times(1)).spin();
     }
 
-
+    @Test
+    public void shouldReturnTrueIfPourInWaterPumpInvokesOnce(){
+        LaundryBatch laundryBatch = LaundryBatch.builder()
+                                                .withWeightKg(6)
+                                                .withType(Material.WOOL)
+                                                .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.SHORT)
+                                                                        .withSpin(true)
+                                                                        .build();
+        washingMachine.start(laundryBatch,programConfiguration);
+        verify(waterPump,times(1)).pour(laundryBatch.getWeightKg());
+    }
 
     @Test
     public void itCompiles() {
