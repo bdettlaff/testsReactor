@@ -4,6 +4,9 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -53,6 +56,22 @@ public class WashingMachineTest {
 
         assertThat(washingMachine.start(laundryBatch,programConfiguration).getResult(),is(Result.SUCCESS));
     }
+
+    @Test
+    public void shouldReturnTrueIfSpinEngineInvokesOnce(){
+        LaundryBatch laundryBatch = LaundryBatch.builder()
+                                                .withWeightKg(6)
+                                                .withType(Material.WOOL)
+                                                .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.SHORT)
+                                                                        .withSpin(true)
+                                                                        .build();
+        washingMachine.start(laundryBatch,programConfiguration);
+        verify(engine,times(1)).spin();
+    }
+
+
 
     @Test
     public void itCompiles() {
