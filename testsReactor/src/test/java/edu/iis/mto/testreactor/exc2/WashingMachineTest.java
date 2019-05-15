@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -97,6 +98,23 @@ public class WashingMachineTest {
                                                                         .build();
         washingMachine.start(laundryBatch,programConfiguration);
         verify(waterPump,times(1)).release();
+    }
+
+    @Test
+    public void shouldReturnTrueIfProgramIsLong(){
+        LaundryBatch laundryBatch = LaundryBatch.builder()
+                                                .withWeightKg(6)
+                                                .withType(Material.WOOL)
+                                                .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.AUTODETECT)
+                                                                        .build();
+        Percentage percentage = new Percentage(41.0d);
+
+        when(dirtDetector.detectDirtDegree(laundryBatch)).thenReturn(percentage);
+        washingMachine.start(laundryBatch,programConfiguration);
+        assertEquals(washingMachine.start(laundryBatch, programConfiguration).getRunnedProgram(), Program.LONG);
+
     }
 
     @Test
