@@ -116,7 +116,7 @@ public class WashingMachineTest {
         assertEquals(washingMachine.start(laundryBatch, programConfiguration).getRunnedProgram(), Program.LONG);
 
     }
-    
+
     @Test
     public void shouldReturnTrueIfProgramIsShort(){
         LaundryBatch laundryBatch = LaundryBatch.builder()
@@ -130,6 +130,20 @@ public class WashingMachineTest {
         washingMachine.start(laundryBatch,programConfiguration);
         assertEquals(washingMachine.start(laundryBatch, programConfiguration).getRunnedProgram(), Program.SHORT);
 
+    }
+
+    @Test
+    public void shouldReturnTrueIfSpinNeverInvoke(){
+        LaundryBatch laundryBatch = LaundryBatch.builder()
+                                                .withWeightKg(6)
+                                                .withType(Material.DELICATE)
+                                                .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.SHORT)
+                                                                        .withSpin(true)
+                                                                        .build();
+        washingMachine.start(laundryBatch,programConfiguration);
+        verify(engine,times(0)).spin();
     }
 
     @Test
