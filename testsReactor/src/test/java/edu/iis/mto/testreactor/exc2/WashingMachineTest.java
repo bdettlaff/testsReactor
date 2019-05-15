@@ -114,7 +114,6 @@ public class WashingMachineTest {
         when(dirtDetector.detectDirtDegree(laundryBatch)).thenReturn(percentage);
         washingMachine.start(laundryBatch,programConfiguration);
         assertEquals(washingMachine.start(laundryBatch, programConfiguration).getRunnedProgram(), Program.LONG);
-
     }
 
     @Test
@@ -144,6 +143,21 @@ public class WashingMachineTest {
                                                                         .build();
         washingMachine.start(laundryBatch,programConfiguration);
         verify(engine,times(0)).spin();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegalArgumentExceptionIfValueIsOutOfRange(){
+        LaundryBatch laundryBatch = LaundryBatch.builder()
+                                                .withWeightKg(6)
+                                                .withType(Material.WOOL)
+                                                .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.AUTODETECT)
+                                                                        .build();
+        Percentage percentage = new Percentage(120.0d);
+
+        when(dirtDetector.detectDirtDegree(laundryBatch)).thenReturn(percentage);
+        washingMachine.start(laundryBatch,programConfiguration);
     }
 
     @Test
