@@ -40,7 +40,19 @@ public class WashingMachineTest {
         assertThat(washingMachine.start(laundryBatch,programConfiguration).getErrorCode(),is(ErrorCode.TOO_HEAVY));
     }
 
-    
+    @Test
+    public void shouldReturnTrueIfProgramIsFinished(){
+        LaundryBatch laundryBatch = LaundryBatch.builder()
+                                                .withWeightKg(6)
+                                                .withType(Material.WOOL)
+                                                .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.SHORT)
+                                                                        .withSpin(true)
+                                                                        .build();
+
+        assertThat(washingMachine.start(laundryBatch,programConfiguration).getResult(),is(Result.SUCCESS));
+    }
 
     @Test
     public void itCompiles() {
