@@ -116,6 +116,21 @@ public class WashingMachineTest {
         assertEquals(washingMachine.start(laundryBatch, programConfiguration).getRunnedProgram(), Program.LONG);
 
     }
+    
+    @Test
+    public void shouldReturnTrueIfProgramIsShort(){
+        LaundryBatch laundryBatch = LaundryBatch.builder()
+                                                .withWeightKg(6)
+                                                .withType(Material.WOOL)
+                                                .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.SHORT)
+                                                                        .build();
+
+        washingMachine.start(laundryBatch,programConfiguration);
+        assertEquals(washingMachine.start(laundryBatch, programConfiguration).getRunnedProgram(), Program.SHORT);
+
+    }
 
     @Test
     public void itCompiles() {
